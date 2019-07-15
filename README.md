@@ -27,7 +27,3 @@ Users can Log in via Google authentication (Add, modify and delete) their produc
 * visit  http://localhost:8000/ in your browser to access the Computer Catalog app.
 
 **The project contain the database you can use it without the use of setup. The database name is  `ComputerShop.db`.**
-
-
-
-Type **python project.py** to run the Flask web server. In your browser visit **http://localhost:5000** to view the restaurant menu app.  You should be able to view, add, edit, and delete menu items and restaurants.
