@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 from flask import Flask, render_template, request, redirect, jsonify, \
     url_for, flash, send_from_directory
