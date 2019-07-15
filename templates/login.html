@@ -1,0 +1,68 @@
+{% extends "main.html" %}
+{% block content %}
+
+  <!-- BEGIN Pre-requisites -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+<script>
+  function start() {
+    gapi.load('auth2', function() {
+      auth2 = gapi.auth2.init({
+        client_id: '916191144944-soj7sm1f9uum0lq6m3fr6gi7dt0kbmoc.apps.googleusercontent.com'
+      });
+    });
+  }
+</script>
+
+<!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
+
+
+
+<!-- GOOGLE PLUS SIGN IN-->
+<div class="row banner menu">
+	<div class="col-md-12">
+        <div class="col-md-offset-5 padding-top" id="login_div">
+        <div class="form-group">
+<button id="signinButton" class="btn">Google Signin</button>
+
+        </div>
+    </div>
+
+        <div id="result" style="text-align:center"></div>
+    </div>
+</div>
+
+<script>
+  $('#signinButton').click(function() {
+    function signInCallback(authResult){
+      if (authResult['code']){
+        $('#login_div').attr('style', 'display: none');
+        $.ajax({
+          type: 'POST',
+          url: '/gconnect?state={{STATE}}',
+          headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+          },
+          contentType: 'application/octet-stream; charset=utf-8',
+          success:function(result){
+            $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+            setTimeout(function() {
+                  window.location.href = "/brand/";
+                 }, 2000);
+          },
+          processData:false,
+          data:authResult['code']
+        });
+      } else{
+        // handle error
+        console.log('There was an error: ' + authResult['error']);
+        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+      }
+    }
+    auth2.grantOfflineAccess().then(signInCallback);
+  });
+</script>
+
+{% endblock %}
+
+<!--END GOOGLE PLUS SIGN IN -->

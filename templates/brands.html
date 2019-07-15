@@ -1,0 +1,60 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row top-menu">
+		<div class="col-md-10"></div>
+		<div class="col-md-2 text-right">
+					</div>
+	</div>
+	<div class="row divider blue">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner main">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>LAPTOPS</h1>
+		</div>
+	</div>
+
+<div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+</div>
+<div class="row padding-top padding-bottom">
+	{% if is_admin %}
+
+		<div class="col-md-1"></div>
+		<div class="col-md-10 padding-none">
+			<a href="{{url_for('new_brand')}}">
+				<button class="btn btn-default" id="new-restaurant">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Brand
+				</button>
+			</a>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+{%endif%}
+	{% for brand in brands %}
+		<a href = "{{url_for('show_model', brand_id = brand.id)}}">
+			<div class="row">
+				<div class="col-md-1"></div>
+					<div class="col-md-10 labtop-list">
+						<h3>{{brand.name}}</h3>
+						<div style="float: right;margin-top: -57px;">
+						<img width="60" height="60" src="{{ url_for('send_file', filename = brand.photo) }}" />
+</div>
+					</div>
+				<div class="col-md-1"></div>
+			</div>
+		</a>
+	{% endfor %}
+{% endblock %}
