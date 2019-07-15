@@ -1,6 +1,6 @@
 # Computer Catalog
 
-This a Udacity [Full Stack Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004) project (ud330) Item Catalog.
+This a Udacity [Full Stack Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd004) project Item Catalog.
 The website offers a various of Laptops brands with description for each laptop model. 
 Users can Log in via Google authentication (Add, modify and delete) their products.
 
