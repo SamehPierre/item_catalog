@@ -40,6 +40,8 @@ DBSession = sessionmaker(bind=engine)
 # Store it in the session for later
 @app.route('/login')
 def show_login():
+    """ Create state token and store it in session."""
+
     state = ''.join(random.choice(string.ascii_uppercase + string.
                                   digits) for x in range(32))
     login_session['state'] = state
@@ -49,6 +51,7 @@ def show_login():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """Connect with google."""
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -150,6 +153,7 @@ def gconnect():
 
 @app.route('/gdisconnect')
 def gdisconnect():
+    """Disconnect from google."""
     # Only disconnect a connected user.
     access_token = login_session.get('access_token')
     if access_token is None:
@@ -175,6 +179,7 @@ def gdisconnect():
 # Disconnect based on provider
 @app.route('/disconnect')
 def disconnect():
+    """Delete stored session."""
     del login_session['access_token']
     del login_session['username']
     del login_session['userid']
@@ -189,6 +194,7 @@ def disconnect():
 
 # User Helper Functions
 def create_user(login_session):
+    """create new user and return user id."""
     session = DBSession()
     new_user = User(name=login_session['username'], email=login_session[
         'email'], picture=login_session['picture'])
@@ -200,30 +206,37 @@ def create_user(login_session):
 
 
 def get_user_info(user_id):
+    """Return user information"""
+
     session = DBSession()
     user = session.query(User).filter_by(id=user_id).one_or_none()
     return user
 
 
 def get_user_id(email):
-        session = DBSession()
-        user = session.query(User).filter_by(email=email).one_or_none()
-        if user is None:
-            return None
-        return user.id
+    """Return user id."""
+
+    session = DBSession()
+    user = session.query(User).filter_by(email=email).one_or_none()
+    if user is None:
+        return None
+    return user.id
 
 
 # JSON APIs to view Brand Information
 @app.route('/brand/<int:brand_id>/model/JSON')
 def brand_json(brand_id):
+    """Returns Laptop Models in a JSON Format"""
     session = DBSession()
     # brand = session.query(Brand).filter_by(id = brand_id).one()
     models = session.query(Model).filter_by(brand_id=brand_id).all()
-    return jsonify(MenuItems=[i.serialize for i in models])
+    return jsonify(Models=[i.serialize for i in models])
 
 
 @app.route('/brand/<int:brand_id>/model/<int:model_id>/JSON')
 def model_json(brand_id, model_id):
+    """Returns Laptop Model in a JSON Format"""
+
     session = DBSession()
     model = session.query(Model).filter_by(id=model_id).one()
     return jsonify(Model=model.serialize)
@@ -240,6 +253,7 @@ def brands_json():
 @app.route('/')
 @app.route('/brand/')
 def show_brands():
+    """Render brands.Html with permission (edit, delete)."""
     session = DBSession()
     brands = session.query(Brand).order_by(asc(Brand.name))
 
@@ -253,12 +267,14 @@ def show_brands():
 
 @app.route('/static/<path:filename>')
 def send_file(filename):
+    """Return photo path."""
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 # Create a new brand
 @app.route('/brand/new/', methods=['GET', 'POST'])
 def new_brand():
+    """Add new Laptop brand."""
     try:
         session = DBSession()
         if request.method == 'POST':
@@ -292,12 +308,13 @@ def new_brand():
 # Edit brand
 @app.route('/brand/<int:brand_id>/edit/', methods=['GET', 'POST'])
 def edit_brand(brand_id):
+    """Edit brand if the created user is the same as the editing user."""
     session = DBSession()
     edited_brand = session.query(Brand).filter_by(id=brand_id).one()
     if request.method == 'POST':
-        creadted_user = edited_brand.user_id
+        created_user = edited_brand.user_id
         logged_user = login_session['userid']
-        if creadted_user != logged_user:
+        if created_user != logged_user:
             flash('You are not authorized to edit')
             return redirect(url_for('show_brands'))
 
@@ -316,6 +333,7 @@ def edit_brand(brand_id):
 # Delete brand and its models
 @app.route('/brand/<int:brand_id>/delete/', methods=['GET', 'POST'])
 def delete_brand(brand_id):
+    """Delete brand if the created user is the same as the deleting user."""
     session = DBSession()
     deleted_brand = session.query(Brand).filter_by(id=brand_id).one()
     if request.method == 'POST':
@@ -341,6 +359,7 @@ def delete_brand(brand_id):
 @app.route('/brand/<int:brand_id>/')
 @app.route('/brand/<int:brand_id>/model/')
 def show_model(brand_id):
+    """Render model.Html with user permission (edit, delete)."""
     session = DBSession()
     brand = session.query(Brand).filter_by(id=brand_id).one()
     models = session.query(Model).filter_by(brand_id=brand_id).all()
@@ -364,6 +383,7 @@ def show_model(brand_id):
 # Create a new brand model
 @app.route('/brand/<int:brand_id>/model/new/', methods=['GET', 'POST'])
 def new_model(brand_id):
+    """Add new laptop model."""
     session = DBSession()
     # brand = session.query(Brand).filter_by(id = brand_id).one()
     if request.method == 'POST':
@@ -405,6 +425,10 @@ def allowed_file(filename):
 @app.route('/brand/<int:brand_id>/model/<int:model_id>/edit',
            methods=['GET', 'POST'])
 def edit_model(brand_id, model_id):
+    """Modify laptop model only
+
+    if the created user is the same as the editing user.
+    """
     session = DBSession()
     edited_model = session.query(Model).filter_by(id=model_id).one()
     if request.method == 'POST':
@@ -450,6 +474,7 @@ def edit_model(brand_id, model_id):
 @app.route('/brand/<int:brand_id>/model/<int:model_id>/delete',
            methods=['GET', 'POST'])
 def delete_model(brand_id, model_id):
+    """Remove model"""
     session = DBSession()
     deleted_model = session.query(Model).filter_by(id=model_id).one()
 
