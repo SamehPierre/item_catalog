@@ -19,6 +19,7 @@ import httplib2
 import json
 from flask import make_response
 import requests
+import logging
 
 UPLOAD_FOLDER = 'static'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -97,7 +98,7 @@ def gconnect():
     if result['issued_to'] != CLIENT_ID:
         response = make_response(
             json.dumps("Token's client ID does not match app's."), 401)
-        print("Token's client ID does not match app's.")
+        logging.info("Token's client ID does not match app's.")
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -142,7 +143,7 @@ def gconnect():
     output += '"style = "width: 300px; height: 300px;border-radius: 150px;' \
               '-webkit-border-radius: 150px;-moz-border-radius: 150px;">'
     flash("you are now logged in as %s" % login_session['username'])
-    print("done!")
+    logging.info("done!")
     return output
 
 
@@ -302,7 +303,7 @@ def new_brand():
         else:
             return render_template('brandNew.html')
     except Exception as ex:
-        return print(str(ex))
+        return logging.error(str(ex))
 
 
 # Edit brand
