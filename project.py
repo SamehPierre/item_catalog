@@ -295,6 +295,12 @@ def edit_brand(brand_id):
     session = DBSession()
     edited_brand = session.query(Brand).filter_by(id=brand_id).one()
     if request.method == 'POST':
+        creadted_user = edited_brand.user_id
+        logged_user = login_session['userid']
+        if creadted_user != logged_user:
+            flash('You are not authorized to edit')
+            return redirect(url_for('show_brands'))
+
         edit_btn = request.form.get('edit')
         if edit_btn is not None:
             if request.form['name']:
@@ -313,6 +319,11 @@ def delete_brand(brand_id):
     deleted_brand = session.query(Brand).filter_by(id=brand_id).one()
     if request.method == 'POST':
         delete_btn = request.form.get('delete')
+        creadted_user = deleted_brand.user_id
+        logged_user = login_session['userid']
+        if creadted_user != logged_user:
+            flash('You are not authorized to delete')
+            return redirect(url_for('show_brands', brand_id=brand_id))
         if delete_btn is not None:
             delete_btn = request.form.get('delete')
             if delete_btn is not None:
@@ -397,6 +408,11 @@ def edit_model(brand_id, model_id):
     edited_model = session.query(Model).filter_by(id=model_id).one()
     if request.method == 'POST':
         edit_btn = request.form.get('edit')
+        creadted_user = edited_model.user_id
+        logged_user = login_session['userid']
+        if creadted_user != logged_user:
+            flash('You are not authorized to edit')
+            return redirect(url_for('show_model', brand_id=brand_id))
         if edit_btn is not None:
             if request.form['name']:
                 edited_model.name = request.form['name']
@@ -437,6 +453,12 @@ def delete_model(brand_id, model_id):
 
     if request.method == 'POST':
         delete_btn = request.form.get('delete')
+        edit_btn = request.form.get('edit')
+        creadted_user = deleted_model.user_id
+        logged_user = login_session['userid']
+        if creadted_user != logged_user:
+            flash('You are not authorized to delete')
+            return redirect(url_for('show_model', brand_id=brand_id))
         if delete_btn is not None:
             session.delete(deleted_model)
             session.commit()
