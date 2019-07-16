@@ -305,6 +305,7 @@ def edit_brand(brand_id):
         if edit_btn is not None:
             if request.form['name']:
                 edited_brand.name = request.form['name']
+                edited_brand.user_id = login_session['userid']
                 session.commit()
                 flash('Brand Successfully Edited %s' % edited_brand.name)
         return redirect(url_for('show_brands'))
@@ -420,6 +421,7 @@ def edit_model(brand_id, model_id):
                 edited_model.description = request.form['description']
             if request.form['price']:
                 edited_model.price = request.form['price']
+            edit_model.user_id = login_session['userid']
         # if 'photo' not in request.files:
         # flash('No file part')
         # return redirect(request.url)
@@ -472,5 +474,5 @@ def delete_model(brand_id, model_id):
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
-    app.debug = False
+    app.debug = True
     app.run(host='0.0.0.0', port=5000)
