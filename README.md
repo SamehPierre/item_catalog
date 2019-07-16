@@ -24,6 +24,6 @@ Users can Log in via Google authentication (Add, modify and delete) their produc
 * Setup the database by running `python3 database_setup.py`.
 * Populate the database by running `python3 populate.py`.
 * Type `python3 project.py` to run the Flask web server.
-* visit  http://localhost:8000/ in your browser to access the Computer Catalog app.
+* visit  http://localhost:5000/ in your browser to access the Computer Catalog app.
 
 **The project contain the database you can use it without the use of setup. The database name is  `ComputerShop.db`.**
