@@ -14,11 +14,11 @@
 			<form action="{{ url_for('edit_brand',brand_id = brand.id)}}" method = "post">
 				<div class="form-group">
 					<label for="name">Name:</label>
-					<input type ="text" class="form-control" name="name" value="{{brand.name }}">
+					<input type ="text" class="form-control" required name="name" value="{{brand.name }}">
 					<div class="padding-bottom"></div>
 					<button type="submit" class="btn btn-default" id="submit" name="edit" type="submit">
 					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save</button>
-					<a href = '{{url_for('show_brands')}}'>
+					<a href = "{{url_for('show_brands')}}">
 						<button class="btn btn-default delete">
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
 					</a>
