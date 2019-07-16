@@ -280,8 +280,8 @@ def new_brand():
                 newbrand = Brand(name=request.form['name'], photo=filename,
                                  user_id=login_session['userid'])
                 session.add(newbrand)
-                flash('New Brand %s Successfully Created' % newbrand.name)
                 session.commit()
+                flash('New Brand %s Successfully Created' % newbrand.name)
             return redirect(url_for('show_brands'))
         else:
             return render_template('brandNew.html')
@@ -299,6 +299,7 @@ def edit_brand(brand_id):
         if edit_btn is not None:
             if request.form['name']:
                 edited_brand.name = request.form['name']
+                session.commit()
                 flash('Brand Successfully Edited %s' % edited_brand.name)
         return redirect(url_for('show_brands'))
     else:
