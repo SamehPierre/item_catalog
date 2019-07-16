@@ -126,7 +126,7 @@ def gconnect():
 
     # see if user exists, if it doesn't make a new one
     user_id = get_user_id(data["email"])
-    if not user_id:
+    if user_id is None:
         user_id = create_user(login_session)
     login_session['userid'] = user_id
 
@@ -209,7 +209,7 @@ def get_user_id(email):
         session = DBSession()
         user = session.query(User).filter_by(email=email).one_or_none()
         if user is None:
-            return redirect(url_for('show_brands'))
+            return None
         return user.id
 
 
