@@ -22,7 +22,6 @@ Users can Log in via Google authentication (Add, modify and delete) their produc
 * **From the terminal**, run `vagrant up` to run the virtual machine, then `vagrant ssh` to login to the VM.
 * cd to the project directory.
 * Setup the database by running `python3 database_setup.py`.
-* Populate the database by running `python3 populate.py`.
 * Type `python3 project.py` to run the Flask web server.
 * visit  http://localhost:5000/ in your browser to access the Computer Catalog app.
 
