@@ -14,15 +14,15 @@
 			<form action="#"  method = "post" enctype=multipart/form-data>
 				<div class="form-group">
 					<label for="name">Name:</label>
-					<input type ="text" maxlength="100" class="form-control" name="name" value="{{model.name }}">
+					<input type ="text" maxlength="100" class="form-control" required name="name" value="{{model.name }}">
 
 					<label for="description">Description:</label>
-					<textarea class="form-control" maxlength="250" rows="3" name="description">{{model.description}}</textarea>
+					<textarea class="form-control" maxlength="250" rows="3" required name="description">{{model.description}}</textarea>
 
 					<label for="price">Price:</label>
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<input type ="number" maxlength="10" class="form-control" name="price" value="{{model.price}}">
+						<input type ="number" maxlength="10" class="form-control" required name="price" value="{{model.price}}">
 					</div>
 					<label for="photo">photo:</label>
 <br />
