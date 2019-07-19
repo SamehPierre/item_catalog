@@ -54,7 +54,7 @@ class Model(Base):
     price = Column(String(8))
     photo = Column(String(250))
     brand_id = Column(Integer, ForeignKey('brand.id'))
-    brand = relationship(Brand)
+    brand = relationship(Brand,cascade="all, delete-orphan")
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
