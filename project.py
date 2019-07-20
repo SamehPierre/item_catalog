@@ -501,4 +501,4 @@ def delete_model(brand_id, model_id):
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host='3.8.133.152', port=80)
+    app.run(host='0.0.0.0', port=5000)
