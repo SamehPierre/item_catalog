@@ -31,7 +31,7 @@ CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///ComputerShop.db')
+engine = create_engine('postgresql://computershop:12345@localhost/catalog')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
